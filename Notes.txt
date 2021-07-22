@@ -1,0 +1,28 @@
+How to Run:
+
+g++ -std=c++17 main.cpp OrderBook.cpp -o main
+./main <input-file>
+
+
+
+Data Structure Notes:
+---------------------
+
+1) unordered_map<OrderId, Level::iterator> : For ease of deletion.  
+2) map<Price, Level>                       : For storing Ask and Bid levels in a sorted fashion
+3) Level = list<Order>                     : For maintaining time priority between orders in the same level.  
+                                             Combining 3) with 1) gives constant time deletion
+
+Performance Notes:
+------------------
+
+1) Adding a new Order: 2 possibilities:
+                                       i) No Trade: Worst case: linear to no. of orders(for indexing in unordered_map)  
+                                                    Avg. case : logarithmic in the unique no. of prices (for inserting to ordered map)
+                                       ii) Trades: Worst Case : liner to no. of orders(A single aggressive order might clear the book)
+                                                   Amortized :  logarithmic in number of unique prices
+
+2) Deleting an Order:  Worst Case : linear to no. of orders(unordered_map)
+                        Avg  Case : Constant
+
+
